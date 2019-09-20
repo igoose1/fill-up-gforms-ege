@@ -13,14 +13,39 @@ driver = webdriver.WebKitGTK()
     Stop editing lines.
 '''
 
+ANSWER_FIELDS = 3
 
-xpaths = [
+fill_xpaths = [
     '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{ind}]/div/div[2]/div/div[1]/div/div[1]/input'.format(
         ind=ind+1
     )
-    for ind in range(3)
+    for ind in range(ANSWER_FIELDS)
 ]
+send_button_xpath = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
 introduction_url = 'file://' + os.path.join(os.getcwd(), 'intro.html')
 driver.get(introduction_url)
+
+problem_set_number = input('Задание: ')
+start_with = input('Начинать с номера: ')
+
+driver.get(FORM_URL)
+ind = start_with
+exit = False
+
+while not exit:
+    try:
+        answer = input('№{}: '.format(ind))
+    except KeyboardInterrupt:
+        exit = True
+    fill_with = [
+        problem_set_number,
+        ind,
+        answer
+    ]
+    for i in range(ANSWER_FIELDS):
+        element = driver.find_element_by_xpath(fill_xpaths[i])
+        element.send_keys(fill_with[i])
+    send_button_element = driver.find_element_by_xpath(send_button_xpath)
+    send_button_element.click()
 
