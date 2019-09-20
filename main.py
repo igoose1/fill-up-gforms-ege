@@ -20,7 +20,7 @@ driver = webdriver.WebKitGTK()
 '''
 
 
-ANSWER_FIELDS = 2
+ANSWER_FIELDS = 3
 
 fill_xpaths = [
     '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{ind}]/div/div[2]/div/div[1]/div/div[1]/input'.format(
