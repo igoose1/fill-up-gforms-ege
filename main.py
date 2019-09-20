@@ -3,15 +3,22 @@ from time import sleep
 
 
 '''
+
+----------------------------
     Edit lines below.
+
 '''
 
 FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
 driver = webdriver.WebKitGTK()
 
 '''
+
     Stop editing lines.
+----------------------------
+
 '''
+
 
 ANSWER_FIELDS = 3
 
