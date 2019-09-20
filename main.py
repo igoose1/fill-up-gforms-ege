@@ -32,9 +32,9 @@ send_button_xpath = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div
 
 problem_set_number = input('Задание: ')
 start_with = input('Начинать с номера: ')
-wait = False
+wait = True
 while wait:
-    wait = 'y' in input('Вы залогинились в Google [y/n]? ')
+    wait = 'y' not in input('Вы залогинились в Google [y/n]? ')
 
 driver.get(FORM_URL)
 ind = int(start_with)
