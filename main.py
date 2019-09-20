@@ -1,5 +1,4 @@
 from selenium import webdriver
-import os
 
 
 '''
@@ -23,11 +22,11 @@ fill_xpaths = [
 ]
 send_button_xpath = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
-introduction_url = 'file://' + os.path.join(os.getcwd(), 'intro.html')
-driver.get(introduction_url)
-
 problem_set_number = input('Задание: ')
 start_with = input('Начинать с номера: ')
+wait = False
+while wait:
+    wait = 'y' in input('Вы залогинились в Google [y/n]?' )
 
 driver.get(FORM_URL)
 ind = start_with
@@ -48,4 +47,4 @@ while not exit:
         element.send_keys(fill_with[i])
     send_button_element = driver.find_element_by_xpath(send_button_xpath)
     send_button_element.click()
-
+    driver.get(FORM_URL)
