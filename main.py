@@ -38,13 +38,12 @@ while wait:
 
 driver.get(FORM_URL)
 ind = start_with
-exit = False
 
-while not exit:
+while True:
     try:
         answer = input('№{}: '.format(ind))
     except KeyboardInterrupt:
-        exit = True
+        break
     fill_with = [
         problem_set_number,
         ind,
@@ -56,3 +55,4 @@ while not exit:
     send_button_element = driver.find_element_by_xpath(send_button_xpath)
     send_button_element.click()
     driver.get(FORM_URL)
+    ind += 1
