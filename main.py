@@ -54,12 +54,19 @@ while wait:
 
 ind = int(start_with)
 
+ways = {
+    '<': -1,
+    '>': +1,
+}
 while True:
     try:
         driver.get(FORM_URL)
         answer = input('№{}: '.format(ind))
     except KeyboardInterrupt:
         break
+    if len(answer) and all(a == answer[0] for a in answer) and answer[0] in ways:
+        ind += ways[answer[0]] * len(answer)
+        continue
     fill_with = [
         problem_set_number,
         ind,
