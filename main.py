@@ -37,7 +37,7 @@ while wait:
     wait = 'y' in input('Вы залогинились в Google [y/n]? ')
 
 driver.get(FORM_URL)
-ind = start_with
+ind = int(start_with)
 
 while True:
     try:
