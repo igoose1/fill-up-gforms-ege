@@ -1,3 +1,6 @@
 # Environments
 .venv
 .env
+
+# Gecko driver (from Firefox webdriver?)
+geckodriver.log
