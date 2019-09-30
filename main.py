@@ -25,7 +25,7 @@ from time import sleep
 '''
 
 FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
-driver = webdriver.WebKitGTK()
+driver = webdriver.Firefox()
 
 '''
 
@@ -64,6 +64,13 @@ while True:
         answer = input('№{}: '.format(ind))
     except KeyboardInterrupt:
         break
+    if len(answer) and answer[0] == '@':
+        try:
+            new_index = int(answer[1:])
+            ind = new_index
+        except:
+            print('Введите валидное число после \'@\', если вы хотели перейти к конкретному номеру')
+        continue
     if len(answer) and all(a == answer[0] for a in answer) and answer[0] in ways:
         ind += ways[answer[0]] * len(answer)
         continue
