@@ -1,4 +1,5 @@
 # Copyright 2019 Oskar Sharipov
+# Copyright 2019 Timur Garaev
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -65,10 +66,11 @@ while True:
     except KeyboardInterrupt:
         break
     if len(answer) and answer[0] == '@':
-        try:
-            ind = int(answer[1:])
-        except:
-            print('Введите валидное число после \'@\', если вы хотели перейти к конкретному номеру')
+        value = answer[1:]
+        if value.isdigit():
+            ind = int(value)
+        else:
+            print('Введите валидное число после \'@\'')
         continue
     if len(answer) and all(a == answer[0] for a in answer) and answer[0] in ways:
         ind += ways[answer[0]] * len(answer)
