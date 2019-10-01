@@ -57,6 +57,7 @@ driver = webdriver.Chrome(executable_path='C:\Documents\')
 №1:
 ...
 ```
+
 ## Лицензия
 
 Подробности в файле LICENSE.
