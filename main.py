@@ -39,16 +39,15 @@ def new_index(string, previous_index):
         return previous_index - len(string)
 
     # if command is > which means 'increase index'
-    elif all(char == '>' for char in string):
+    if all(char == '>' for char in string):
         return previous_index + len(string)
 
     # if command is @N which means 'goto N'
-    elif string[0] == '@' and string[1:].isdigit():
+    if string[0] == '@' and string[1:].isdigit():
         return int(string[1:])
 
     # if command syntax is wrong
-    else:
-        return previous_index
+    return previous_index
 
 
 def preload(driver):
