@@ -23,7 +23,7 @@ from time import sleep
 
 
 FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
-driver = webdriver.WebKitGTK()
+driver = webdriver.WebKitGTK
 
 # Stop editing lines.
 # ----------------------------
@@ -99,6 +99,8 @@ def rolling(driver, problem_set_number, start_with):
 
 
 def main():
+    # execute webdriver
+    driver = driver()
     problem_set_number, start_with = preload(driver)
     rolling(driver, problem_set_number, start_with)
 
