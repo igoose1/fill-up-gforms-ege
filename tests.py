@@ -24,6 +24,7 @@ class TestNewIndexMethod(unittest.TestCase):
                 expected_results[i]
             )
 
+
 class TestIsCommandMethod(unittest.TestCase):
 
     def test_smoke(self):
