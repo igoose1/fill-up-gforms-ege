@@ -18,70 +18,93 @@ from selenium import webdriver
 from time import sleep
 
 
-'''
+# ----------------------------
+# Edit lines below.
 
-----------------------------
-    Edit lines below.
-
-'''
 
 FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
 driver = webdriver.WebKitGTK()
 
-'''
-
-    Stop editing lines.
-----------------------------
-
-'''
+# Stop editing lines.
+# ----------------------------
 
 
-ANSWER_FIELDS = 3
+def is_command(string):
+    return len(string) and string[0] in ('<', '>', '@')
 
-fill_xpaths = [
-    '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{ind}]/div/div[2]/div/div[1]/div/div[1]/input'.format(
-        ind=ind+1
-    )
-    for ind in range(ANSWER_FIELDS)
-]
-send_button_xpath = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
-driver.get(FORM_URL)
-problem_set_number = input('Задание: ')
-start_with = input('Начинать с номера: ')
-while 'y' not in input('Вы залогинились в Google [y/n]? '):
-    pass
+def new_index(string, previous_index):
+    # if command is < which means 'decrease index'
+    if all(char == '<' for char in string):
+        return previous_index - len(string)
 
-ind = int(start_with)
+    # if command is > which means 'increase index'
+    elif all(char == '>' for char in string):
+        return previous_index + len(string)
 
-ways = {
-    '<': -1,
-    '>': +1,
-}
-while True:
-    try:
-        driver.get(FORM_URL)
-        answer = input('№{}: '.format(ind))
-    except KeyboardInterrupt:
-        break
-    if len(answer) and answer[0] == '@':
-        value = answer[1:]
-        if value.isdigit():
-            ind = int(value)
-        else:
-            print('Введите валидное число после \'@\'')
-        continue
-    if len(answer) and all(a == answer[0] for a in answer) and answer[0] in ways:
-        ind += ways[answer[0]] * len(answer)
-        continue
-    fill_with = [
-        problem_set_number,
-        ind,
-        answer
+    # if command is @N which means 'goto N'
+    elif string[0] == '@' and string[1:].isdigit():
+        return int(string[1:])
+
+    # if command syntax is wrong
+    else:
+        return previous_index
+
+
+def preload(driver):
+    driver.get(FORM_URL)
+    problem_set_number = input('Задание: ')
+    start_with = input('Начинать с номера: ')
+    while 'y' not in input('Вы залогинились в Google [y/n]? '):
+        pass
+
+    return problem_set_number, start_with
+
+
+def fill(driver, fill_with):
+    ANSWER_FIELDS = 3
+    fill_xpaths = [
+        '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{ind}]/div/div[2]/div/div[1]/div/div[1]/input'.format(
+            ind=ind+1
+        )
+        for ind in range(ANSWER_FIELDS)
     ]
+    send_button_xpath = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
+
     for i in range(ANSWER_FIELDS):
         element = driver.find_element_by_xpath(fill_xpaths[i])
         element.send_keys(fill_with[i])
     send_button_element = driver.find_element_by_xpath(send_button_xpath)
     send_button_element.click()
-    ind += 1
+
+
+def rolling(driver, problem_set_number, start_with):
+    index = int(start_with)
+
+    while True:
+        if driver.current_url != FORM_URL:
+            driver.get(FORM_URL)
+        answer = input('№{}: '.format(index))
+        if is_command(answer):
+            index = new_index(answer, index)
+            continue
+
+        fill_with = [
+            problem_set_number,
+            index,
+            answer
+        ]
+        fill(driver, fill_with)
+        index += 1
+
+
+def main():
+    problem_set_number, start_with = preload(driver)
+    rolling(driver, problem_set_number, start_with)
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print()
+        print('Пока <3')
