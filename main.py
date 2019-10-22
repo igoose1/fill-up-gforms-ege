@@ -14,6 +14,8 @@
 #     limitations under the License.
 
 
+import threading
+import queue
 from selenium import webdriver
 from time import sleep
 
@@ -35,6 +37,9 @@ SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div/div[3]/div[1]/div/div/sp
 
 # Stop editing lines.
 # ----------------------------
+
+solutions_queue = queue.Queue()
+filling_thread = None
 
 
 def is_command(string):
@@ -68,47 +73,55 @@ def preload(driver):
     return problem_set_number, start_with
 
 
-def fill(driver, fill_with):
-    ANSWER_FIELDS = 3
-    fill_xpaths = [
-        INPUT_FIELD_XPATH_LAYOUT.format(
-            index=index+1
-        )
-        for index in range(ANSWER_FIELDS)
-    ]
+def fill(driver):
+    while True:
+        solution = solutions_queue.get()
+        if solution is None:
+            break
 
-    for i in range(ANSWER_FIELDS):
-        element = driver.find_element_by_xpath(fill_xpaths[i])
-        element.send_keys(fill_with[i])
-    send_button_element = driver.find_element_by_xpath(SEND_BUTTON_XPATH)
-    send_button_element.click()
+        ANSWER_FIELDS = 3
+        fill_xpaths = [
+            INPUT_FIELD_XPATH_LAYOUT.format(
+                index=index+1
+            )
+            for index in range(ANSWER_FIELDS)
+        ]
+
+        if driver.current_url != FORM_URL:
+            driver.get(FORM_URL)
+        for i in range(ANSWER_FIELDS):
+            element = driver.find_element_by_xpath(fill_xpaths[i])
+            element.send_keys(solution[i])
+        send_button_element = driver.find_element_by_xpath(SEND_BUTTON_XPATH)
+        send_button_element.click()
 
 
-def rolling(driver, problem_set_number, start_with):
+def rolling(problem_set_number, start_with):
     index = int(start_with)
 
     while True:
-        if driver.current_url != FORM_URL:
-            driver.get(FORM_URL)
         answer = input('№{}: '.format(index))
         if is_command(answer):
             index = new_index(answer, index)
             continue
 
-        fill_with = [
+        solution = [
             problem_set_number,
             index,
             answer
         ]
-        fill(driver, fill_with)
+        solutions_queue.put(solution)
         index += 1
 
 
 def main():
+    global filling_thread
     # execute webdriver
     driver = DRIVER()
     problem_set_number, start_with = preload(driver)
-    rolling(driver, problem_set_number, start_with)
+    filling_thread = threading.Thread(target=fill, args=(driver,))
+    filling_thread.start()
+    rolling(problem_set_number, start_with)
 
 
 if __name__ == '__main__':
@@ -116,4 +129,7 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         print()
+        print('Завершение работы...')
+        solutions_queue.put(None)
+        filling_thread.join()
         print('Пока <3')
