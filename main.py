@@ -66,11 +66,10 @@ def new_index(string, previous_index):
 def preload(driver):
     driver.get(FORM_URL)
     problem_set_number = input('Задание: ')
-    start_with = input('Начинать с номера: ')
     while 'y' not in input('Вы залогинились в Google [y/n]? '):
         pass
 
-    return problem_set_number, start_with
+    return problem_set_number
 
 
 def fill(driver):
@@ -96,8 +95,8 @@ def fill(driver):
         send_button_element.click()
 
 
-def rolling(problem_set_number, start_with):
-    index = int(start_with)
+def rolling(problem_set_number, start_with=0):
+    index = start_with
 
     while True:
         answer = input('№{}: '.format(index))
@@ -118,10 +117,10 @@ def main():
     global filling_thread
     # execute webdriver
     driver = DRIVER()
-    problem_set_number, start_with = preload(driver)
+    problem_set_number = preload(driver)
     filling_thread = threading.Thread(target=fill, args=(driver,))
     filling_thread.start()
-    rolling(problem_set_number, start_with)
+    rolling(problem_set_number)
 
 
 if __name__ == '__main__':
