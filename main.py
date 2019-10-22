@@ -24,10 +24,12 @@ from time import sleep
 
 FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
 DRIVER = webdriver.WebKitGTK
-INPUT_FIELD_XPATH_LAYOUT = '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
-SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
-# New design xpaths. WIP (have no opportunity to look at new design page).
+# New design xpaths.
+INPUT_FIELD_XPATH_LAYOUT = '/html/body/div/div[2]/form/div/div/div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
+SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div/div[3]/div[1]/div/div/span/span'
+
+# Old design xpaths.
 # INPUT_FIELD_XPATH_LAYOUT = '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
 # SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
