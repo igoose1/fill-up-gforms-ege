@@ -1,5 +1,7 @@
 # Заполнитель Google-формы для заданий ЕГЭ
 
+[![Build Status](https://travis-ci.org/igoose1/fill-up-gforms-ege.svg?branch=master)](https://travis-ci.org/igoose1/fill-up-gforms-ege)
+
 Скрипт был написан для занятий в Лицее №7 г. Казани для выполнения весьма нишевой задачи:
 заполнения нудной формы для отправки решений заданий при подготовке к ЕГЭ.
 
