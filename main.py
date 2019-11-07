@@ -43,24 +43,28 @@ filling_thread = None
 
 
 def is_command(string):
-    return len(string) and string[0] in ('<', '>', '@')
+    return len(string) and string[0] in ('<', '>', '@', '$')
 
 
-def new_index(string, previous_index):
+def process_command(string, previous_index, previous_problem_set):
     # if command is < which means 'decrease index'
     if all(char == '<' for char in string):
-        return previous_index - len(string)
+        return previous_index - len(string), previous_problem_set
 
     # if command is > which means 'increase index'
     if all(char == '>' for char in string):
-        return previous_index + len(string)
+        return previous_index + len(string), previous_problem_set
 
     # if command is @N which means 'goto N'
     if string[0] == '@' and string[1:].isdigit():
-        return int(string[1:])
+        return int(string[1:]), previous_problem_set
+
+    # if command is $N which means 'goto N problem set and reset index'
+    if string[0] == '$' and len(string[1:]):
+        return 1, string[1:]
 
     # if command syntax is wrong
-    return previous_index
+    return previous_index, previous_problem_set
 
 
 def preload(driver):
@@ -101,7 +105,11 @@ def rolling(problem_set_number, start_with=0):
     while True:
         answer = input('№{}: '.format(index))
         if is_command(answer):
-            index = new_index(answer, index)
+            index, problem_set_number = process_command(
+                answer,
+                index,
+                problem_set_number
+            )
             continue
 
         solution = [
