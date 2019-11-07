@@ -13,4 +13,4 @@ script:
  # Is that code OK? Execute code linters
  - pylama --async --sort E,W,D
  # Execute tests
- - python -m unittest
+ - python -m unittest -b

@@ -24,11 +24,18 @@ class TestProccesCommandMethod(unittest.TestCase):
                 expected_results[i]
             )
 
+    def test_help(self):
+        self.assertEqual(
+            main.process_command('?', 123, '!@#$'),
+            (123, '!@#$')
+        )
+
 
 class TestIsCommandMethod(unittest.TestCase):
 
     def test_smoke(self):
-        strings, expected_results = ('123', '>>', '@7', '$87'), (False, True, True, True)
+        strings = ('123', '>>', '@7', '$87', '?')
+        expected_results = (False, True, True, True, True)
 
         for i in range(3):
             self.assertEqual(
