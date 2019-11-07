@@ -49,6 +49,23 @@ SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div/div[3]/div[1]/div/div/sp
 # Stop editing lines.
 # ----------------------------
 
+HELP_MESSAGE = '''Скрипт для заполнения Google форм на уроках IT в
+Лицее-интернате №7.
+
+При запуске спросит задание и будет ждать входа в аккаунт, проверяя, когда
+наконец скрипт сможет оказаться перед формой. Если что-то с этой проверкой
+пошло не так (например, с браузера пошли делать что-то другое), перезапустите
+скрипт.
+
+Возможные команды:
+`@N` -- сменит индекс на N (должно быть целым числом!).
+`$ABC` -- сменит задание на ABC.
+`?` -- выведет это сообщение.
+
+Также есть стрелочки (`<` или `>`), которые дикрементируют или инкрементируют
+индекс.
+'''
+
 solutions_queue = queue.Queue()
 filling_thread = None
 
@@ -62,7 +79,7 @@ def is_command(string):
         The string which should be checked
     """
 
-    return len(string) and string[0] in ('<', '>', '@', '$')
+    return len(string) and string[0] in ('<', '>', '@', '$', '?')
 
 
 def process_command(string, previous_index, previous_problem_set):
@@ -77,6 +94,11 @@ def process_command(string, previous_index, previous_problem_set):
     previous_problem_set : str
         Problem set which was before execution
     """
+
+    # if command is '?' which means 'show help and do nothing'
+    if string[0] == '?':
+        print(HELP_MESSAGE)
+        return previous_index, previous_problem_set
 
     # if command is < which means 'decrease index'
     if all(char == '<' for char in string):
@@ -108,6 +130,7 @@ def preload(driver):
     """
 
     driver.get(FORM_URL)
+    print(HELP_MESSAGE)
     problem_set_number = input('Задание: ')
     print('Ждем входа в аккаунт Google с доступом к форме...')
     while driver.current_url != FORM_URL:
