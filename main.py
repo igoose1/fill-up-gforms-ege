@@ -13,6 +13,8 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
+"""Script for filling up Google Forms by studying in litsey7 ege ICT
+lessons."""
 
 import threading
 import queue
@@ -51,10 +53,30 @@ filling_thread = None
 
 
 def is_command(string):
+    """Check if `string` is the command.
+
+    Parameters
+    ----------
+    string : str
+        The string which should be checked
+    """
+
     return len(string) and string[0] in ('<', '>', '@', '$')
 
 
 def process_command(string, previous_index, previous_problem_set):
+    """Try to execute command if it's possible. If it's not, do nothing.
+
+    Parameters
+    ----------
+    string : str
+        The string of the command which should be executed
+    previous_index : int
+        Index which was before execution
+    previous_problem_set : str
+        Problem set which was before execution
+    """
+
     # if command is < which means 'decrease index'
     if all(char == '<' for char in string):
         return previous_index - len(string), previous_problem_set
@@ -76,6 +98,14 @@ def process_command(string, previous_index, previous_problem_set):
 
 
 def preload(driver):
+    """Load webdriver and ask user of preparameters.
+
+    Parameters
+    ----------
+    driver
+        Selenium webdriver
+    """
+
     driver.get(FORM_URL)
     problem_set_number = input('Задание: ')
     while 'y' not in input('Вы залогинились в Google [y/n]? '):
@@ -85,6 +115,16 @@ def preload(driver):
 
 
 def fill(driver):
+    """Fill up fields to send answer.
+
+    Get new answers in queue to process them in webdriver
+
+    Parameters
+    ----------
+    driver
+        Selenium webdriver
+    """
+
     while True:
         solution = solutions_queue.get()
         if solution is None:
@@ -108,6 +148,17 @@ def fill(driver):
 
 
 def rolling(problem_set_number, start_with=1):
+    """Ask user of answers.
+
+    Parameters
+    ----------
+
+    problem_set_number : str
+        Problem set
+    start_with : int
+        Index at starting of rolling
+    """
+
     index = start_with
 
     while True:
@@ -130,6 +181,7 @@ def rolling(problem_set_number, start_with=1):
 
 
 def main():
+    """Main function which starts new thread and executes preloading."""
     global filling_thread
     # execute webdriver
     driver = DRIVER()
