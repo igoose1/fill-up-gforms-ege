@@ -18,6 +18,7 @@ lessons."""
 
 import threading
 import queue
+import time
 from selenium import webdriver
 
 
@@ -108,8 +109,10 @@ def preload(driver):
 
     driver.get(FORM_URL)
     problem_set_number = input('Задание: ')
-    while 'y' not in input('Вы залогинились в Google [y/n]? '):
-        pass
+    print('Ждем входа в аккаунт Google с доступом к форме...')
+    while driver.current_url != FORM_URL:
+        time.sleep(.5)
+    print('Дождались!')
 
     return problem_set_number
 
