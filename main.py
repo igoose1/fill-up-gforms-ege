@@ -1,12 +1,12 @@
 # Copyright 2019 Oskar Sharipov
 # Copyright 2019 Timur Garaev
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 #     Unless required by applicable law or agreed to in writing, software
 #     distributed under the License is distributed on an "AS IS" BASIS,
 #     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,22 +17,30 @@
 import threading
 import queue
 from selenium import webdriver
-from time import sleep
 
 
 # ----------------------------
 # Edit lines below.
 
 
-FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
+FORM_URL = (
+    'https://docs.google.com/forms/d/e/'
+    '1FAIpQLScyrlhh0IGxev3S9CKrO8vyX_MkhfLSKCl_2Ux3QZRDo2_DaA/viewform'
+)
 DRIVER = webdriver.WebKitGTK
 
 # New design xpaths.
-INPUT_FIELD_XPATH_LAYOUT = '/html/body/div/div[2]/form/div/div/div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
+INPUT_FIELD_XPATH_LAYOUT = (
+    '/html/body/div/div[2]/form/div/div/div[2]/'
+    'div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
+)
 SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div/div[3]/div[1]/div/div/span/span'
 
 # Old design xpaths.
-# INPUT_FIELD_XPATH_LAYOUT = '/html/body/div/div[2]/form/div/div[2]/div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
+# INPUT_FIELD_XPATH_LAYOUT = (
+#   '/html/body/div/div[2]/form/div/div[2]/'
+#   'div[2]/div[{index}]/div/div[2]/div/div[1]/div/div[1]/input'
+# )
 # SEND_BUTTON_XPATH = '/html/body/div/div[2]/form/div/div[2]/div[3]/div[1]/div/div/span'
 
 # Stop editing lines.
