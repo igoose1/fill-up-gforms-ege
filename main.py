@@ -107,7 +107,7 @@ def fill(driver):
         send_button_element.click()
 
 
-def rolling(problem_set_number, start_with=0):
+def rolling(problem_set_number, start_with=1):
     index = start_with
 
     while True:
