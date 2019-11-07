@@ -13,6 +13,6 @@ install:
 
 script:
  # Is that code OK? Execute code linters
- - pylama --async --sort
+ - pylama --async --sort E,W,D
  # Execute tests
  - python -m unittest
