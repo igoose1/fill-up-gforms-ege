@@ -196,6 +196,8 @@ def rolling(problem_set_number, start_with=1):
                 problem_set_number
             )
             continue
+        if answer == '':
+            continue
 
         solution = [
             problem_set_number,
