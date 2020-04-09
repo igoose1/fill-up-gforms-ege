@@ -4,3 +4,9 @@
 
 # Gecko driver (from Firefox webdriver?)
 geckodriver.log
+
+# cache
+__pycache__/
+
+# video
+demonstration*
