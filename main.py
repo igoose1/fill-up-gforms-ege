@@ -1,4 +1,4 @@
-# Copyright 2019 Oskar Sharipov
+# Copyright 2019-2020 Oskar Sharipov
 # Copyright 2019 Timur Garaev
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
