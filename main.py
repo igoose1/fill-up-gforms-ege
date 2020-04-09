@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Copyright 2019-2020 Oskar Sharipov
 # Copyright 2019 Timur Garaev
 #
